@@ -96,9 +96,9 @@ void Game::init()
     shader.Use();
     glUniform1i(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "image"), 0);
     glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
-
     renderer = new SpriteRenderer(shader);
     bodyPhysics = new physics();
+    //xd
     //Create world objects
     worldObjects.push_back(new worldObject( //Sun
         glm::vec3(0.0f, 0.0f, 0.0f),        //position
