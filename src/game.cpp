@@ -93,7 +93,6 @@ void Game::init()
     //perspective projection
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 30000.0f);
-    //glm::mat4 projection = glm::ortho(0.0f, scrWidth, scrHeight, 0.0f, -1000.0f, 1000.0f);
     shader.Use();
     glUniform1i(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "image"), 0);
     glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
@@ -198,7 +197,7 @@ void Game::renderImgui(float deltaTime)
 
         ImGui::InputFloat("Mass: %.3f km", &worldObjects.at(selectedPlanet)->mass, 10000000000000.0f, 1000000000000.0f);
 
-        ImGui::SliderFloat("Render speed", &renderSpeed, -100.0f, 100.0f);
+        ImGui::SliderFloat("Render speed", &renderSpeed, 0.0f, 100.0f);
 
         if (ImGui::Button("Toggle scale"))
         {
