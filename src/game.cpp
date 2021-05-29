@@ -98,7 +98,6 @@ void Game::init()
     glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     renderer = new SpriteRenderer(shader);
     bodyPhysics = new physics();
-    //x
     //Create world objects
     worldObjects.push_back(new worldObject( //Sun
         glm::vec3(0.0f, 0.0f, 0.0f),        //position
@@ -197,7 +196,6 @@ void Game::renderImgui(float deltaTime)
 
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
     {
         ImGui::Begin("Executions");
         const char *items[]{"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"};
