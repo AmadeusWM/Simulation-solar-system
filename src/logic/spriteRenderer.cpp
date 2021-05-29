@@ -14,7 +14,6 @@ SpriteRenderer::~SpriteRenderer()
 void SpriteRenderer::DrawSprite(glm::vec4 color, glm::vec3 position, glm::vec3 size, glm::vec3 rotate)
 {
     // Prepare transformations
-    // float planetSize = 1000000.0f;
     this->shader.Use();
     glm::mat4 model = glm::mat4(1.0);
     model = glm::translate(model, glm::vec3(position / universeScale)); // First translate

@@ -92,13 +92,13 @@ void Game::init()
     Shader shader = ResourceManager::LoadShader("shader.vert", "shader.frag", nullptr, "shader");
     //perspective projection
     glm::mat4 projection = glm::mat4(1.0f);
-    projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.1f, 30000.0f);
+    projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.001f, 30000.0f);
     shader.Use();
     glUniform1i(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "image"), 0);
     glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     renderer = new SpriteRenderer(shader);
     bodyPhysics = new physics();
-    //xd
+    //x
     //Create world objects
     worldObjects.push_back(new worldObject( //Sun
         glm::vec3(0.0f, 0.0f, 0.0f),        //position
@@ -161,14 +161,37 @@ void Game::init()
         1.30f * std::pow(10, 22),
         1188.0f * 1000,
         glm::vec4(0.89f, 0.847f, 0.745f, 1.0f)));
+    float moonDistance = 147094329630.0f + 384402000.0f;
+    float moonVelocity = 30273.8213f + 1024.0f;
+    worldObjects.push_back(new worldObject( //random spaceship
+        calcPos(moonDistance, 0.00286565558804565f, 357.921544278592f, 254.381064202347f, 208.193256922f),
+        calcVel(moonVelocity, 0.00286565558804565f, 357.921544278592f, 254.381064202347f, 208.193256922f),
+        7.34767309f * std::pow(10, 22),
+        1737.0f * 1000.0f,
+        glm::vec4(0.563f, 0.50f, 0.963f, 1.0f)));
+    // srand(time(NULL));
+    // for (int i = 1; i < 200; i++)
+    // {
+    //     float randomFloatX = rand() / (RAND_MAX + 1.0f);
+    //     float randomFloatY = rand() / (RAND_MAX + 1.0f);
+    //     float randomFloatZ = rand() / (RAND_MAX + 1.0f);
+    //     std::cout << randomFloatX << std::endl;
+    //     worldObjects.push_back(new worldObject(       //Sun
+    //         glm::vec3(5000000000000.0f * randomFloatX, 5000000000000.0f * randomFloatY, 0.0f), //position
+    //         glm::vec3(0.0f, 0.0f, 0.0f),              //velocity
+    //         1.98850f * std::pow(10, 30),              //mass
+    //         695700.0f * 2000.0f,
+    //         glm::vec4(randomFloatX, randomFloatY, randomFloatZ,1.0f)
+    //         ));
+    // }
 }
 //--------imgui--------
 int selectedPlanet = 0;
 void Game::renderImgui(float deltaTime)
 {
 
-    dt = 0.00025 * renderSpeed;
-    dtMovement = 0.00025;
+    dt = 0.00025f * renderSpeed;
+    dtMovement = 0.00025f;
     timePassed += dt;
     ImGui_ImplOpenGL3_NewFrame();
 
@@ -198,6 +221,7 @@ void Game::renderImgui(float deltaTime)
         ImGui::InputFloat("Mass: %.3f km", &worldObjects.at(selectedPlanet)->mass, 10000000000000.0f, 1000000000000.0f);
 
         ImGui::SliderFloat("Render speed", &renderSpeed, 0.0f, 100.0f);
+        ImGui::Text("Time passed: %.2f Days", timePassed);
 
         if (ImGui::Button("Toggle scale"))
         {
@@ -214,7 +238,8 @@ void Game::renderImgui(float deltaTime)
                 worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
             }
         }
-        ImGui::Text("Time passed: %.2f Days", timePassed);
+        ImGui::Spacing();
+        ImGui::SliderFloat("Camera movementspeed", &speed, 0.0f, 5000.0f);
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
         ImGui::End();
     }
@@ -226,7 +251,10 @@ void Game::renderImgui(float deltaTime)
 void Game::handleEvents()
 {
     //Input
-    float speed = 1000.0f;
+    if (glfwGetKey(window, GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+    {
+        speed = 1000.0f;
+    }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
@@ -251,6 +279,7 @@ void Game::handleEvents()
     {
         eye.z += speed * dtMovement;
     }
+
     else if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
     {
         eye.z -= speed * dtMovement;

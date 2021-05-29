@@ -24,6 +24,7 @@ void physics::computeVel(std::vector<worldObject *> &worldObjects, float dt, flo
 					glm::vec3 momentum = body1->velocity * body1->mass + body2->velocity * body2->mass;
 					body1->setMass(body1->mass + body2->mass);
 					body1->velocity = momentum / body1->mass;
+					body1->radius += body2->radius;
 					body1->size += body2->radius;
 					std::cout << "the second number is going to be erased" << i << " " << j << "\n";
 
@@ -37,7 +38,7 @@ void physics::computeVel(std::vector<worldObject *> &worldObjects, float dt, flo
 			}
 		}
 	}
-	for (int i = 0; i < removed.size(); i++)
+	for (int i = removed.size()-1; i >= 0 ; i--)
 	{
 		worldObjects.erase(worldObjects.begin() + removed[i]);
 	}

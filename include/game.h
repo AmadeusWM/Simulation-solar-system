@@ -22,8 +22,9 @@
 #include <glm/gtx/rotate_vector.hpp>
 class Game {
 	private:
+
 		float dt;
-		float timePassed = 0; // In days
+		float timePassed = 0.0f; // In days
 		float renderSpeed = 0.0f;
 		float dtMovement;
 
@@ -32,7 +33,7 @@ class Game {
 		physics* bodyPhysics;
 
 		float scrWidth, scrHeight;
-		float speed = 0.0f;
+		float speed = 1000.0f;
 		glm::vec3 rotation = glm::vec3(0.0f, glm::radians(180.0f), 0.0f);
 		//environment
 		std::vector<worldObject*> worldObjects;
