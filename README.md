@@ -6,4 +6,4 @@ Simulating the solar system based on data obtained from Nasa, using Newton's law
 - GLAD
 - GLFW
 - GLM
-- ImGUI=
+- ImGUI
