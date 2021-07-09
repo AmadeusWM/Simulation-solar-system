@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="glad.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stb_image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="textureManager\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resourceManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui_draw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui_impl_glfw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui_impl_opengl3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="vendor\imgui_widgets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="terrainFile\world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders\Shader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="enemy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders\Shader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="textureManager\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Object.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animationManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="terrainFile\world.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\shader.vert" />
+    <None Include="shaders\shader.frag" />
+    <None Include="shaders\shaderTilemap.frag" />
+    <None Include="shaders\shaderTilemap.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="art\dirt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\walking_walk_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\gay1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\gay2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\player\idle\idle_idle_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\player\idle\idle_idle_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\player\idle\idle_idle_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\player\idle\idle_idle_3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\idle\idle_idle_0.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\idle\idle_idle_1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\idle\idle_idle_2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\idle\idle_idle_3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\playerAnim.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\playerAnim2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\player\playerAnim3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="art\terrain\dirt.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="terrainFile\terrain4.txt" />
+    <Text Include="terrainFile\terrain.txt" />
+  </ItemGroup>
+</Project>
