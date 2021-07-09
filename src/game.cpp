@@ -168,21 +168,21 @@ void Game::init()
         7.34767309f * std::pow(10, 22),
         1737.0f * 1000.0f,
         glm::vec4(0.563f, 0.50f, 0.963f, 1.0f)));
-    // srand(time(NULL));
-    // for (int i = 1; i < 200; i++)
-    // {
-    //     float randomFloatX = rand() / (RAND_MAX + 1.0f);
-    //     float randomFloatY = rand() / (RAND_MAX + 1.0f);
-    //     float randomFloatZ = rand() / (RAND_MAX + 1.0f);
-    //     std::cout << randomFloatX << std::endl;
-    //     worldObjects.push_back(new worldObject(       //Sun
-    //         glm::vec3(5000000000000.0f * randomFloatX, 5000000000000.0f * randomFloatY, 0.0f), //position
-    //         glm::vec3(0.0f, 0.0f, 0.0f),              //velocity
-    //         1.98850f * std::pow(10, 30),              //mass
-    //         695700.0f * 2000.0f,
-    //         glm::vec4(randomFloatX, randomFloatY, randomFloatZ,1.0f)
-    //         ));
-    // }
+    srand(time(NULL));
+    for (int i = 1; i < 200; i++)
+    {
+        float randomFloatX = rand() / (RAND_MAX + 1.0f);
+        float randomFloatY = rand() / (RAND_MAX + 1.0f);
+        float randomFloatZ = rand() / (RAND_MAX + 1.0f);
+        std::cout << randomFloatX << std::endl;
+        worldObjects.push_back(new worldObject(       //Sun
+            glm::vec3(5000000000000.0f * randomFloatX, 5000000000000.0f * randomFloatY, randomFloatZ* 5000000000000.0f), //position
+            glm::vec3(0.0f, 0.0f, 0.0f),              //velocity
+            1.98850f * std::pow(10, 30),              //mass
+            695700.0f * 2000.0f,
+            glm::vec4(randomFloatX, randomFloatY, randomFloatZ,1.0f)
+            ));
+    }
 }
 //--------imgui--------
 int selectedPlanet = 0;
