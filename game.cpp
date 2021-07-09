@@ -3,6 +3,8 @@
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 //mouse movement
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
+// key inputs
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
 //positions camera    (eye = camera pos, center = where we look at, up = camera upside)    Right hand technique
 glm::vec3 eye = glm::vec3(0.0f, -2613.0f, 0.0f);
 glm::vec3 center = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -18,6 +20,7 @@ float pitch = 0.0f;
 float xoffset;
 float yoffset;
 
+bool newPlanet = 0;
 glm::vec3 calcPos(float RG, float IN, float TA, float W, float OM)
 {
     glm::vec3 pos = glm::vec3(RG, 0.0f, 0.0f);
@@ -54,7 +57,7 @@ Game::Game(const unsigned int SCR_WIDTH, const unsigned int SCR_HEIGHT, const ch
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
-
+    glfwSetKeyCallback(window, key_callback);
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -89,7 +92,7 @@ void Game::init()
 
     //----------testing-----------
     //create shader object
-    Shader shader = ResourceManager::LoadShader("shaders/shader.vert", "shaders/shader.frag", nullptr, "shader");
+    Shader shader = ResourceManager::LoadShader("shader.vert", "shader.frag", nullptr, "shader");
     //perspective projection
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.001f, 30000.0f);
@@ -175,13 +178,12 @@ void Game::init()
     //     float randomFloatY = rand() / (RAND_MAX + 1.0f);
     //     float randomFloatZ = rand() / (RAND_MAX + 1.0f);
     //     std::cout << randomFloatX << std::endl;
-    //     worldObjects.push_back(new worldObject(       //Sun
-    //         glm::vec3(5000000000000.0f * randomFloatX, 5000000000000.0f * randomFloatY, 0.0f), //position
-    //         glm::vec3(0.0f, 0.0f, 0.0f),              //velocity
-    //         1.98850f * std::pow(10, 30),              //mass
+    //     worldObjects.push_back(new worldObject(                                                                           //Sun
+    //         glm::vec3(5000000000000.0f * randomFloatX, 5000000000000.0f * randomFloatY, randomFloatZ * 5000000000000.0f), //position
+    //         glm::vec3(0.0f, 0.0f, 0.0f),                                                                                  //velocity
+    //         1.98850f * std::pow(10, 30),                                                                                  //mass
     //         695700.0f * 2000.0f,
-    //         glm::vec4(randomFloatX, randomFloatY, randomFloatZ,1.0f)
-    //         ));
+    //         glm::vec4(randomFloatX, randomFloatY, randomFloatZ, 1.0f)));
     // }
 }
 //--------imgui--------
@@ -293,6 +295,18 @@ void Game::handleEvents()
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         glfwSetCursorPos(window, lastX, lastY);
     }
+    //Launch Planet
+    if (newPlanet == 1)
+    {
+        std::cout << eye.x << " " << eye.y << " " << eye.z << " -- " << center.x << " " << center.y << " " << center.z << "\n";
+        worldObjects.push_back(new worldObject( //Jupiter
+            glm::vec3(eye.x * (8.0f * std::pow(10, 8)), eye.y * (8.0f * std::pow(10, 8)), eye.z * (8.0f * std::pow(10, 8))),
+            center * 100000.0f,
+            1.89813f * std::pow(10, 27),
+            69911.0f * 1000,
+            glm::vec4(0.71f, 0.545f, 0.306f, 1.0f)));
+        newPlanet = 0;
+    }
 }
 
 void Game::render()
@@ -357,4 +371,12 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
 GLFWwindow *Game::getWindow()
 {
     return window;
+}
+
+void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
+{
+    if (key == GLFW_KEY_P && action == GLFW_PRESS)
+    {
+        newPlanet = 1;
+    }
 }
