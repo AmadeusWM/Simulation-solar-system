@@ -5,6 +5,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 // key inputs
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods);
 //positions camera    (eye = camera pos, center = where we look at, up = camera upside)    Right hand technique
 glm::vec3 eye = glm::vec3(0.0f, -2613.0f, 0.0f);
 glm::vec3 center = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -57,7 +58,9 @@ Game::Game(const unsigned int SCR_WIDTH, const unsigned int SCR_HEIGHT, const ch
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
+    //keys
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -92,13 +95,13 @@ void Game::init()
 
     //----------testing-----------
     //create shader object
-    Shader shader = ResourceManager::LoadShader("shader.vert", "shader.frag", nullptr, "shader");
+    Shader shader = ResourceManager::LoadShader("shaders/shader.vert", "shaders/shader.frag", nullptr, "shader");
     //perspective projection
     glm::mat4 projection = glm::mat4(1.0f);
     projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.001f, 30000.0f);
     shader.Use();
     glUniform1i(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "image"), 0);
-    glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("sshaders/hader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     renderer = new SpriteRenderer(shader);
     bodyPhysics = new physics();
     //Create world objects
@@ -375,7 +378,14 @@ GLFWwindow *Game::getWindow()
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_P && action == GLFW_PRESS)
+    if (key == GLFW_KEY_R && action == GLFW_PRESS)
+    {
+        newPlanet = 1;
+    }
+}
+void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
     {
         newPlanet = 1;
     }
