@@ -101,7 +101,7 @@ void Game::init()
     projection = glm::perspective(glm::radians(45.0f), 1920.0f / 1080.0f, 0.001f, 30000.0f);
     shader.Use();
     glUniform1i(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "image"), 0);
-    glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("sshaders/hader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+    glUniformMatrix4fv(glGetUniformLocation(ResourceManager::GetShader("shader").ID, "projection"), 1, GL_FALSE, glm::value_ptr(projection));
     renderer = new SpriteRenderer(shader);
     bodyPhysics = new physics();
     //Create world objects
