@@ -204,11 +204,11 @@ void Game::renderImgui(float deltaTime)
     {
         ImGui::Begin("Executions");
         ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        const char *items[worldObjects.size()]{"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"};
-        for (int i = 10; i < worldObjects.size(); i++){
-            const char* bodyName = "uncategorized body";
-            items[i] = bodyName;
-        }
+        const char *items[]{"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"};
+        //for (int i = 10; i < worldObjects.size(); i++){
+            // const char* bodyName = "uncategorized body";
+            //items[i] = bodyName;
+        // }
         ImGui::Combo("Planets", &selectedPlanet, items, IM_ARRAYSIZE(items));
         // ImGui::Text("");
         if (ImGui::TreeNode("Positions"))
