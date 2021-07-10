@@ -2,18 +2,18 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "./imgui/imgui.h"
+#include "./imgui/imgui_impl_glfw.h"
+#include "./imgui/imgui_impl_opengl3.h"
 
 #include <iostream>
 #include <vector>
 #include <cmath>
 
-#include "resourceManager.h"
-#include "spriteRenderer.h"
-#include "worldObject.h"
-#include "physics.h"
+#include "./logic/resourceManager.h"
+#include "./logic/spriteRenderer.h"
+#include "./components/worldObject.h"
+#include "./logic/physics.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -34,13 +34,15 @@ private:
 	float scrWidth, scrHeight;
 	float speed = 1000.0f;
 	glm::vec3 rotation = glm::vec3(0.0f, glm::radians(180.0f), 0.0f);
-	//New body
-	float bodyVelocity = 100000.0f; 
-	float bodyMass = 1000.0f; 
-	float bodyRadius = 10000000.0f; 
-	glm::vec4 bodyColor = glm::vec4(0.5f,0.7f,0.4f,1.0f); 
-public:
+	//environment
 	std::vector<worldObject *> worldObjects;
+	//New body
+	float bodyVelocity = 100000.0f;
+	float bodyMass = 1000.0f;
+	float bodyRadius = 10000000.0f;
+	glm::vec4 bodyColor = glm::vec4(0.5f, 0.7f, 0.4f, 1.0f);
+
+public:
 	//constructor & destructor
 	Game(const unsigned int SCR_WIDTH, const unsigned int SCR_HEIGHT, const char *name);
 	~Game();
