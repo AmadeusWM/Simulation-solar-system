@@ -231,21 +231,9 @@ void Game::renderImgui(float deltaTime)
         ImGui::InputFloat("Render speed", &renderSpeed, 100.0f, 10.0f);
         ImGui::Text("Time passed: %.2f Days", timePassed);
 
-        if (ImGui::Button("Toggle scale"))
-        {
-            if (renderer->planetSize == 8.0f * std::pow(10, 8))
-            {
-                renderer->planetSize = 1000000.0f;
-                float radius = 695700.0f * 20.0f;
-                worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
-            }
-            else
-            {
-                renderer->planetSize = 8.0f * std::pow(10, 8);
-                float radius = 695700.0f * 1000.0f;
-                worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
-            }
-        }
+        ImGui::SliderFloat("Size bodies", &planetScale, 0.0f, 100.0f);
+        renderer->planetSize = 1.0f / planetScale * 8.0f * std::pow(10, 8);
+        
         ImGui::Spacing();
         ImGui::InputFloat("Camera movementspeed", &speed, 1000.0f, 100.0f);
         if (ImGui::TreeNode("Add a new body"))

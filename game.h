@@ -36,6 +36,8 @@ private:
 	glm::vec3 rotation = glm::vec3(0.0f, glm::radians(180.0f), 0.0f);
 	//environment
 	std::vector<worldObject *> worldObjects;
+
+	float planetScale = 1.0f;
 	//New body
 	float bodyVelocity = 100000.0f;
 	float bodyMass = 1000.0f;
