@@ -5,6 +5,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void mouse_callback(GLFWwindow *window, double xpos, double ypos);
 // key inputs
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods);
+void mouse_button_callback(GLFWwindow *window, int button, int action, int mods);
 //positions camera    (eye = camera pos, center = where we look at, up = camera upside)    Right hand technique
 glm::vec3 eye = glm::vec3(0.0f, -2613.0f, 0.0f);
 glm::vec3 center = glm::vec3(0.0f, 1.0f, 0.0f);
@@ -20,7 +21,7 @@ float pitch = 0.0f;
 float xoffset;
 float yoffset;
 
-bool newPlanet = 0;
+bool newBody = 0;
 glm::vec3 calcPos(float RG, float IN, float TA, float W, float OM)
 {
     glm::vec3 pos = glm::vec3(RG, 0.0f, 0.0f);
@@ -57,7 +58,9 @@ Game::Game(const unsigned int SCR_WIDTH, const unsigned int SCR_HEIGHT, const ch
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
     glfwSetCursorPosCallback(window, mouse_callback);
+    //keys
     glfwSetKeyCallback(window, key_callback);
+    glfwSetMouseButtonCallback(window, mouse_button_callback);
     // glad: load all OpenGL function pointers
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
@@ -171,7 +174,7 @@ void Game::init()
         7.34767309f * std::pow(10, 22),
         1737.0f * 1000.0f,
         glm::vec4(0.563f, 0.50f, 0.963f, 1.0f)));
-    // srand(time(NULL));
+    srand(time(NULL));
     // for (int i = 1; i < 200; i++)
     // {
     //     float randomFloatX = rand() / (RAND_MAX + 1.0f);
@@ -200,7 +203,12 @@ void Game::renderImgui(float deltaTime)
     ImGui::NewFrame();
     {
         ImGui::Begin("Executions");
-        const char *items[]{"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"};
+        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        const char *items[worldObjects.size()]{"Sun", "Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto"};
+        for (int i = 10; i < worldObjects.size(); i++){
+            const char* bodyName = "uncategorized body";
+            items[i] = bodyName;
+        }
         ImGui::Combo("Planets", &selectedPlanet, items, IM_ARRAYSIZE(items));
         // ImGui::Text("");
         if (ImGui::TreeNode("Positions"))
@@ -220,27 +228,36 @@ void Game::renderImgui(float deltaTime)
 
         ImGui::InputFloat("Mass: %.3f km", &worldObjects.at(selectedPlanet)->mass, 10000000000000.0f, 1000000000000.0f);
 
-        ImGui::SliderFloat("Render speed", &renderSpeed, 0.0f, 100.0f);
+        ImGui::InputFloat("Render speed", &renderSpeed, 100.0f, 10.0f);
         ImGui::Text("Time passed: %.2f Days", timePassed);
-
-        if (ImGui::Button("Toggle scale"))
-        {
-            if (renderer->planetSize == 8.0f * std::pow(10, 8))
-            {
-                renderer->planetSize = 1000000.0f;
-                float radius = 695700.0f * 20.0f;
-                worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
-            }
-            else
-            {
-                renderer->planetSize = 8.0f * std::pow(10, 8);
-                float radius = 695700.0f * 1000.0f;
-                worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
-            }
-        }
+        ImGui::SliderFloat("Size bodies", &planetScale, 0.0f, 100.0f);
+        renderer->planetSize = 1.0f / planetScale * 8.0f * std::pow(10, 8);
+        // if (ImGui::Button("Toggle scale"))
+        // {
+        //     if (renderer->planetSize == 8.0f * std::pow(10, 8))
+        //     {
+        //         renderer->planetSize = 1.0f * std::pow(10, 7);;
+        //         // float radius = 695700.0f * 20.0f;
+        //         // worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
+        //     }
+        //     else
+        //     {
+        //         renderer->planetSize = 8.0f * std::pow(10, 8);
+        //         // float radius = 695700.0f * 1000.0f;
+        //         // worldObjects.at(0)->size = glm::vec3(radius, radius, radius);
+        //     }
+        // }
         ImGui::Spacing();
-        ImGui::SliderFloat("Camera movementspeed", &speed, 0.0f, 5000.0f);
-        ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+        ImGui::InputFloat("Camera movementspeed", &speed, 1000.0f, 100.0f);
+        if (ImGui::TreeNode("Add a new body"))
+        {
+            ImGui::Text("Launch a new body with right click!");
+            ImGui::InputFloat("Velocity(m/s)", &bodyVelocity, 1000.0f, 200.0f);
+            ImGui::InputFloat("Mass(*10^25kg)", &bodyMass, 1000.0f, 200.0f);
+            ImGui::InputFloat("Radius(m)", &bodyRadius, 1000000.0f, 200000.0f);
+            ImGui::ColorEdit3("Color", &bodyColor.x);
+            ImGui::TreePop();
+        }
         ImGui::End();
     }
 
@@ -257,15 +274,15 @@ void Game::handleEvents()
     }
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_Z) == GLFW_PRESS)
     {
-        eye += center * dtMovement * speed;
+        eye += center * dtMovement* speed;
     }
     else if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
     {
         eye -= center * dtMovement * speed;
     }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
         eye.x -= (center.x * cos(glm::radians(-90.0f)) - center.y * sin(glm::radians(-90.0f))) * dtMovement * speed;
         eye.y -= (center.x * sin(glm::radians(-90.0f)) + center.y * cos(glm::radians(-90.0f))) * dtMovement * speed;
@@ -296,16 +313,16 @@ void Game::handleEvents()
         glfwSetCursorPos(window, lastX, lastY);
     }
     //Launch Planet
-    if (newPlanet == 1)
+    if (newBody == 1)
     {
         std::cout << eye.x << " " << eye.y << " " << eye.z << " -- " << center.x << " " << center.y << " " << center.z << "\n";
         worldObjects.push_back(new worldObject( //Jupiter
             glm::vec3(eye.x * (8.0f * std::pow(10, 8)), eye.y * (8.0f * std::pow(10, 8)), eye.z * (8.0f * std::pow(10, 8))),
-            center * 100000.0f,
-            1.89813f * std::pow(10, 27),
-            69911.0f * 1000,
-            glm::vec4(0.71f, 0.545f, 0.306f, 1.0f)));
-        newPlanet = 0;
+            center * bodyVelocity,
+            bodyMass* std::pow(10, 25),
+            bodyRadius,
+            bodyColor));
+        newBody = 0;
     }
 }
 
@@ -375,8 +392,15 @@ GLFWwindow *Game::getWindow()
 
 void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    if (key == GLFW_KEY_P && action == GLFW_PRESS)
+    if (key == GLFW_KEY_R && action == GLFW_PRESS)
     {
-        newPlanet = 1;
+        newBody = 1;
+    }
+}
+void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+{
+    if (button == GLFW_MOUSE_BUTTON_RIGHT && action == GLFW_PRESS)
+    {
+        newBody = 1;
     }
 }

@@ -34,7 +34,13 @@ private:
 	float scrWidth, scrHeight;
 	float speed = 1000.0f;
 	glm::vec3 rotation = glm::vec3(0.0f, glm::radians(180.0f), 0.0f);
-	//environment
+
+    float planetScale = 1.0f;
+	//New body
+	float bodyVelocity = 100000.0f; 
+	float bodyMass = 1000.0f; 
+	float bodyRadius = 10000000.0f; 
+	glm::vec4 bodyColor = glm::vec4(0.5f,0.7f,0.4f,1.0f); 
 public:
 	std::vector<worldObject *> worldObjects;
 	//constructor & destructor
